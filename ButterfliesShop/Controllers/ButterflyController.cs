@@ -41,12 +41,28 @@ namespace ButterfliesShop.Controllers
             Butterfly requestedButterfly = _data.GetButterflyById(id);
             if (requestedButterfly != null)
             {
-                return null;
+                string webRootpath = _environment.WebRootPath;
+                string folderPath = "\\images\\";
+                string fullPath = webRootpath + folderPath + requestedButterfly.ImageName;
+                if (System.IO.File.Exists(fullPath))
+                {
+                    var fileOnDisk = new FileStream(fullPath, FileMode.Open);
+                    byte[] fileBytes;
+                    using (var br = new BinaryReader(fileOnDisk))
+                    {
+                        fileBytes = br.ReadBytes((int)fileOnDisk.Length);
+                    }
+                    return File(fileBytes, requestedButterfly.ImageMimeType);
+                }
+                else
+                {
+                    if (requestedButterfly.PhotoFile.Length > 0)
+                    {
+                        File(requestedButterfly.PhotoFile, requestedButterfly.ImageMimeType);
+                    }
+                }
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
 
         public IActionResult Index()

@@ -1,7 +1,6 @@
-﻿
-@{
-    Layout = null;
-}
+﻿@using ButterfliesShop.Models
+@model ButterfliesShop.Models.Butterfly
+@{ Layout = null; }
 
 <!DOCTYPE html>
 
@@ -12,5 +11,37 @@
     <link type="text/css" rel="stylesheet" href="~/css/butterflies-shop-styles.css" />
 </head>
 <body>
+    <div class="container">
+        <h1 class="main-title">Add Butterflies to the Shop</h1>
+        <form method="post" enctype="multipart/form-data" asp-action="Create">
+            <div class="form-field">
+                <label asp-for="CommonName" />
+                <input asp-for="CommonName" />
+            </div>
+            <div class="form-field">
+                <label asp-for="ButterflyFamily" />
+                <select asp-for="ButterflyFamily" asp-items="Html.GetEnumSelectList<Family>()">
+                    <option selected="selected" value="">Select</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label asp-for="Characteristics" />
+                <textarea asp-for="Characteristics"></textarea>
+            </div>
+            <div class="form-field">
+                <label asp-for="Quantity" />
+                <input asp-for="Quantity" />
+            </div>
+            <div class="form-field">
+                <label asp-for="PhotoAvatar" />
+                <input asp-for="PhotoAvatar" type="file" />
+            </div>
+            <div class="form-field">
+                <input type="submit" value="Submit" />
+            </div>
+
+        </form>
+    </div>
+
 </body>
 </html>
