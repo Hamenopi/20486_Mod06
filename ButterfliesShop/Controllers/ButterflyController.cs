@@ -75,27 +75,31 @@ namespace ButterfliesShop.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(Butterfly butterfly)
         {
-            var lastButterfly = _data.ButterfliesList.LastOrDefault();
-            lastButterfly.CreatedDate = DateTime.Today;
-            if (butterfly.PhotoAvatar != null && butterfly.PhotoAvatar.Length > 0)
+            if (ModelState.IsValid)
             {
-                butterfly.ImageMimeType = butterfly.PhotoAvatar.ContentType;
-                butterfly.ImageName = Path.GetFileName(butterfly.PhotoAvatar.FileName);
-                butterfly.Id = lastButterfly.Id++;
-                _butterfliesQuantityService.AddButterfliesQuantityData(butterfly);
-                using (MemoryStream ms = new MemoryStream())
+                var lastButterfly = _data.ButterfliesList.LastOrDefault();
+                lastButterfly.CreatedDate = DateTime.Today;
+                if (butterfly.PhotoAvatar != null && butterfly.PhotoAvatar.Length > 0)
                 {
-                    butterfly.PhotoAvatar.CopyTo(ms);
-                    butterfly.PhotoFile = ms.ToArray();
+                    butterfly.ImageMimeType = butterfly.PhotoAvatar.ContentType;
+                    butterfly.ImageName = Path.GetFileName(butterfly.PhotoAvatar.FileName);
+                    butterfly.Id = lastButterfly.Id++;
+                    _butterfliesQuantityService.AddButterfliesQuantityData(butterfly);
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        butterfly.PhotoAvatar.CopyTo(ms);
+                        butterfly.PhotoFile = ms.ToArray();
+                    }
+                    _data.AddButterfly(butterfly);
+                    return RedirectToAction("Index");
                 }
-                _data.AddButterfly(butterfly);
-                return RedirectToAction("Index");
             }
             return View(butterfly);
         }
