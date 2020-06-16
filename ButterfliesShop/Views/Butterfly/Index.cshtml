@@ -1,7 +1,5 @@
-﻿
-@{
-    Layout = null;
-}
+﻿@model ButterfliesShop.Models.IndexViewModel
+@{ Layout = null; }
 
 <!DOCTYPE html>
 
@@ -12,5 +10,20 @@
     <link type="text/css" rel="stylesheet" href="~/css/butterflies-shop-styles.css" />
 </head>
 <body>
+    <div class="container">
+        <h1 class="main-title">Butterflies Shop</h1>
+        <p class="into">Our Butterflies in the Shop </p>
+        <button type="button" onclick="location.href='@Url.Action("Create","Butterfly")'">Add Butterflies</button>
+        <div class="img-container">
+            @foreach (var item in Model.Butterflies)
+            {
+<div class="photo-index-card">
+    <p>@item.CommonName</p>
+    <p>@item.ButterflyFamily</p>
+    <p>@item.Quantity</p>
+    <p>@item.CreatedDate</p>
+</div>      }
+        </div>
+    </div>
 </body>
 </html>
